@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wWano App - Choose View</title>
+    <!-- Removed link to external CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"> <!-- Example Google Font -->
+
+    <style>
+        /* Basic Reset & Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font stack */
+            background-color: #f4f7f6; /* Light gray background */
+            color: #333;
+            display: flex; /* Use flexbox for easy centering */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            padding: 20px; /* Add some padding for smaller screens */
+        }
+
+        /* Centered Container */
+        .container {
+            background-color: #ffffff; /* White background for the main content */
+            padding: 40px 30px;
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            text-align: center;
+            max-width: 500px; /* Max width for the container */
+            width: 100%; /* Ensure it takes available width up to max-width */
+        }
+
+        /* Logo Styling */
+        .logo {
+            max-width: 150px; /* Control logo size */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 25px; /* Space below logo */
+        }
+
+        /* Heading Styling */
+        h1 {
+            font-size: 1.8em; /* Responsive font size */
+            color: #2c3e50; /* Darker heading color */
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        /* View Selector (Button Container) Styling */
+        .view-selector {
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically */
+            gap: 20px; /* Space between buttons */
+        }
+
+        /* General Button Styling */
+        .btn {
+            display: block; /* Make links block-level */
+            padding: 18px 25px;
+            font-size: 1.5em; /* Adjust font size */
+            font-weight: 600;
+            text-decoration: none;
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 8px; /* Slightly rounded corners */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+            text-transform: uppercase; /* Optional: Uppercase text */
+            letter-spacing: 1px; /* Optional: Spacing */
+        }
+
+        /* Specific Button Colors */
+        .btn-real {
+            background-color: #3498db; /* Blue color for REAL */
+        }
+
+        .btn-plus {
+            background-color: #2ecc71; /* Green color for PLUS */
+        }
+
+        /* Button Hover Effects */
+        .btn:hover {
+            opacity: 0.9; /* Slightly fade background */
+            transform: translateY(-3px); /* Slight lift effect */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Add shadow on hover */
+        }
+
+        .btn:active {
+            transform: translateY(0); /* Return to original position on click */
+            box-shadow: none; /* Remove shadow on click */
+        }
+
+        /* Responsive Adjustments (Optional Example) */
+        @media (min-width: 600px) {
+            /* Optional: Could switch to side-by-side layout on wider screens */
+            /*
+            .view-selector {
+                flex-direction: row;
+                justify-content: center;
+            }
+            .btn {
+                width: 45%;
+            }
+            */
+            h1 {
+                font-size: 2em;
+            }
+            .btn {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <img src="wWano logo white bg.png" alt="wWano Logo" class="logo">
+            <h1>Select Your View</h1>
+        </header>
+
+        <nav class="view-selector">
+            <!-- Link to the 'REAL' view section -->
+            <a href="index.html#customer-view" class="btn btn-real">
+                REAL
+            </a>
+
+            <!-- Link to the 'PLUS' view section (login) -->
+            <a href="index.html#login-form" class="btn btn-plus">
+                PLUS
+            </a>
+        </nav>
+    </div>
+
+</body>
+
+</html>
