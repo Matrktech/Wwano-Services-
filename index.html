@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -726,8 +727,8 @@
             margin-bottom: 15px;
             justify-content: space-around; /* Space out buttons */
         }
-        #alert-media-buttons button {
-            flex-basis: calc(50% - 10px); /* Two buttons per row approx */
+        #alert-media-buttons button, #alert-media-buttons label.button-like { /* Include label */
+            flex-basis: calc(50% - 10px); /* Two items per row approx */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -735,13 +736,15 @@
             padding: 8px 10px;
             text-transform: none; /* Less shouty */
         }
-         #alert-media-buttons button .material-icons {
+         #alert-media-buttons button .material-icons,
+         #alert-media-buttons label.button-like .material-icons { /* Include label */
              font-size: 20px;
          }
          #alert-media-preview {
              margin-top: 10px;
              font-size: 0.85em;
              color: #666;
+             min-height: 20px; /* Ensure space is reserved */
          }
         #alert-media-preview img, #alert-media-preview video, #alert-media-preview audio {
              max-width: 100%;
@@ -750,6 +753,7 @@
              margin-top: 5px;
              border: 1px solid #ccc;
              border-radius: 4px;
+             object-fit: contain; /* Better fit for previews */
          }
 
         /* --- Alert Table Styles --- */
@@ -772,11 +776,13 @@
              color: #888;
              font-style: italic;
          }
-         .alert-table .alert-media img { /* Simple preview for uploaded image */
+         .alert-table .alert-media img { /* Style for preview in table */
              max-width: 80px;
              max-height: 60px;
              margin-top: 5px;
-             cursor: pointer;
+             cursor: pointer; /* Indicate it might be clickable */
+             border: 1px solid #ddd;
+             border-radius: 3px;
          }
          .alert-status-new { font-weight: bold; color: #f44336; }
          .alert-status-viewed { color: #ff9800; }
@@ -1508,7 +1514,7 @@
     </div>
 </div>
 
-<!-- Alert Reporting Modal (NEW) -->
+<!-- Alert Reporting Modal (Updated for media handling) -->
 <div id="alert-modal" class="modal-overlay">
     <div class="modal-content-box">
         <div class="modal-header">
@@ -1524,6 +1530,7 @@
 
                 <label>Attach Media (Optional):</label>
                 <div id="alert-media-buttons">
+                    <!-- Add onclick handlers -->
                     <button type="button" class="info small" onclick="recordVideo()">
                         <i class="material-icons">videocam</i> Record Video
                     </button>
@@ -1533,8 +1540,8 @@
                     <button type="button" class="info small" onclick="captureImage()">
                         <i class="material-icons">photo_camera</i> Take Photo
                     </button>
-                     <!-- Standard file input for upload -->
-                     <label for="alert-image-upload" class="button-like info small" style="margin:0; flex-basis: calc(50% - 10px); height: auto;">
+                     <!-- Change button to label, add onchange to input -->
+                     <label for="alert-image-upload" class="button-like info small" style="margin:0; flex-basis: calc(50% - 10px); height: auto; cursor: pointer;">
                          <i class="material-icons">upload_file</i> Upload Image
                      </label>
                      <input type="file" id="alert-image-upload" accept="image/*" style="display: none;" onchange="handleAlertImageUpload(event)">
@@ -1542,7 +1549,8 @@
                 <div id="alert-media-preview">
                     <!-- Media previews will appear here -->
                 </div>
-                <input type="hidden" id="alert-media-data" value=""> <!-- Store Data URL -->
+                <!-- This hidden input will store the media data (e.g., Data URL for images) -->
+                <input type="hidden" id="alert-media-data" value="">
 
                 <label for="alert-location-display">Your Location:</label>
                 <div id="alert-location-display">Fetching location...</div>
@@ -1902,7 +1910,7 @@
              starContainerElement.appendChild(icon);
          }
      }
-     // Function to read file as Data URL (used for images)
+     // Function to read file as Data URL (used for images) - Verified Existence
     function readFileAsDataURL(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -3332,7 +3340,7 @@
         });
     }
 
-    // --- Alert System Functions (NEW) ---
+    // --- Alert System Functions (NEW - Includes Media Handling) ---
 
     function openAlertModal() {
         // Reset form state
@@ -3383,48 +3391,59 @@
         }
     }
 
-    // Placeholder Media Functions
+    // --- Media Capture Placeholders & Implementation ---
+
     function recordVideo() {
-        alert("Video recording feature not implemented in this demo.");
-        // TODO: Implement using MediaRecorder API
-        // Example: alertMediaPreviewDiv.innerHTML = '<p><i>Video recording... (placeholder)</i></p>';
-        // alertMediaDataInput.value = 'video_placeholder'; // Indicate type
-    }
-    function recordAudio() {
-        alert("Audio recording feature not implemented in this demo.");
-        // TODO: Implement using MediaRecorder API
-        // Example: alertMediaPreviewDiv.innerHTML = '<p><i>Audio recording... (placeholder)</i></p>';
-        // alertMediaDataInput.value = 'audio_placeholder';
-    }
-    function captureImage() {
-        alert("Direct image capture feature not implemented in this demo. Please use 'Upload Image'.");
-        // TODO: Could trigger a hidden file input with 'capture' attribute,
-        // but cross-browser support and UX can be tricky.
-        // Example: document.getElementById('alert-image-upload-capture').click();
-        // alertMediaDataInput.value = 'capture_placeholder';
+        alert("Video recording feature not implemented in this demo.\n\n(Requires MediaRecorder API)");
+        // In a real app, you would use navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        // and the MediaRecorder API to capture and save video.
+        alertMediaPreviewDiv.innerHTML = '<p><i>Video capture placeholder.</i></p>';
+        alertMediaDataInput.value = 'video_placeholder'; // Indicate type for potential backend
     }
 
-    // Handle image upload
+    function recordAudio() {
+        alert("Audio recording feature not implemented in this demo.\n\n(Requires MediaRecorder API)");
+        // Similar to video, use getUserMedia({ audio: true }) and MediaRecorder.
+        alertMediaPreviewDiv.innerHTML = '<p><i>Audio capture placeholder.</i></p>';
+        alertMediaDataInput.value = 'audio_placeholder'; // Indicate type
+    }
+
+    function captureImage() {
+        alert("Direct image capture feature not implemented in this demo. Please use 'Upload Image'.\n\n(Could use getUserMedia + Canvas or input capture attribute)");
+        // Option 1: Trigger a hidden file input with capture attribute
+        // Option 2: Use getUserMedia({ video: true }) -> draw frame to canvas -> get Data URL
+        alertMediaPreviewDiv.innerHTML = '<p><i>Direct photo capture placeholder.</i></p>';
+        alertMediaDataInput.value = 'capture_placeholder'; // Indicate type
+    }
+
+    // Handle image upload from file input
     async function handleAlertImageUpload(event) {
         const file = event.target.files[0];
+        alertMediaPreviewDiv.innerHTML = ''; // Clear previous preview/message
+        alertMediaDataInput.value = ''; // Clear previous data
+
         if (file && file.type.startsWith('image/')) {
-            alertMediaPreviewDiv.innerHTML = 'Processing image...';
+            alertMediaPreviewDiv.innerHTML = '<p><i>Processing image...</i></p>';
             try {
-                const imageDataUrl = await readFileAsDataURL(file);
+                const imageDataUrl = await readFileAsDataURL(file); // Use existing utility function
                 alertMediaDataInput.value = imageDataUrl; // Store the Data URL
                 alertMediaPreviewDiv.innerHTML = `<img src="${imageDataUrl}" alt="Uploaded Preview">`;
+                console.log("Image loaded successfully as Data URL.");
             } catch (error) {
                 console.error("Error reading uploaded image:", error);
-                alertMediaPreviewDiv.innerHTML = '<p style="color:red;">Error reading image.</p>';
+                alertMediaPreviewDiv.innerHTML = '<p style="color:red;">Error reading image file.</p>';
                 alertMediaDataInput.value = ''; // Clear on error
             }
         } else if (file) {
-            alertMediaPreviewDiv.innerHTML = '<p style="color:red;">Please select an image file.</p>';
+            // If a file was selected but it's not an image
+            alertMediaPreviewDiv.innerHTML = '<p style="color:red;">Please select a valid image file (e.g., JPG, PNG, GIF).</p>';
             alertMediaDataInput.value = ''; // Clear if not image
-             event.target.value = null; // Reset file input
+            event.target.value = null; // Reset file input so user can select again
         }
+        // If no file selected (e.g., user cancels), do nothing, keep preview empty.
     }
 
+    // Modified handleSendAlert to include the media data
     function handleSendAlert(event) {
         event.preventDefault();
         alertSendErrorDiv.textContent = '';
@@ -3453,18 +3472,38 @@
             if (lat && lon) { locationObj = { lat: parseFloat(lat), lon: parseFloat(lon) }; }
         }
 
+        // --- Prepare media object ---
+        let mediaForStorage = [];
+        if (mediaData) {
+            let mediaType = 'unknown';
+            if (mediaData.startsWith('data:image')) {
+                mediaType = 'image_data_url';
+            } else if (mediaData === 'video_placeholder') {
+                 mediaType = 'video_placeholder'; // Or just 'video' if backend handles it
+            } else if (mediaData === 'audio_placeholder') {
+                 mediaType = 'audio_placeholder'; // Or just 'audio'
+            } else if (mediaData === 'capture_placeholder') {
+                mediaType = 'image_placeholder'; // Or just 'image'
+            }
+            // In a real app, you'd likely upload the file/blob and store a URL or ID.
+            // For this demo, we store the Data URL directly for images.
+            mediaForStorage.push({ type: mediaType, data: mediaData });
+        }
+        // --- End Prepare media object ---
+
         const newAlert = {
             id: `alert_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
             senderId: senderId,
             senderType: senderType,
-            senderName: senderName, // Store name for easier display
+            senderName: senderName,
             reason: reason,
             location: locationObj,
-            media: mediaData ? [{ type: 'image_data_url', data: mediaData }] : [], // Store media info (basic for now)
-            // In real app: store URLs or IDs after upload, specify type (video/audio/image)
+            media: mediaForStorage, // Use the prepared media array
             timestamp: new Date().toISOString(),
-            status: 'New' // Initial status
+            status: 'New'
         };
+
+        console.log("Sending Alert:", newAlert); // Log for debugging
 
         const alerts = getFromLocalStorage(ALERTS_KEY);
         alerts.push(newAlert);
@@ -3478,7 +3517,7 @@
         if (loggedInPoliceInfo && currentScreen === 'police-alerts') { displayPoliceAlerts(loggedInPoliceInfo.policeId); }
     }
 
-    // Display Alerts (Admin)
+    // Modified displayAdminAlerts to show image previews
     function displayAdminAlerts() {
         if (!isAdminLoggedIn) return;
         const alerts = getFromLocalStorage(ALERTS_KEY);
@@ -3491,29 +3530,35 @@
             return;
         }
 
-        alerts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Newest first
+        alerts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         alerts.forEach(alert => {
             const row = adminAlertsTableBody.insertRow();
             const senderInfo = `${escapeHtml(alert.senderName)} (${escapeHtml(alert.senderType)})`;
             const locationText = alert.location ? `${alert.location.lat}, ${alert.location.lon}` : 'N/A';
             const time = new Date(alert.timestamp);
             const formattedTime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+
+            // Media display logic
             let mediaInfo = 'None';
-            let mediaPreview = '';
+            let mediaPreviewHtml = ''; // Changed to Html
             if (alert.media && alert.media.length > 0) {
-                 // Basic check for image data URL
-                 if (alert.media[0].type === 'image_data_url' && alert.media[0].data.startsWith('data:image')) {
+                 const firstMedia = alert.media[0];
+                 if (firstMedia.type === 'image_data_url' && firstMedia.data.startsWith('data:image')) {
                      mediaInfo = 'Image Attached';
-                     mediaPreview = `<img src="${alert.media[0].data}" alt="Alert Media" title="Click to view (Not implemented)">`; // Placeholder link
+                     // Added style for thumbnail size
+                     mediaPreviewHtml = `<img src="${firstMedia.data}" alt="Alert Media" title="Attached Image" style="max-width: 80px; max-height: 60px; display: block; margin-top: 5px; cursor: pointer;">`;
+                 } else if (firstMedia.type === 'video_placeholder' || firstMedia.type === 'audio_placeholder' || firstMedia.type === 'image_placeholder') {
+                     mediaInfo = `${firstMedia.type.split('_')[0].charAt(0).toUpperCase() + firstMedia.type.split('_')[0].slice(1)} (Placeholder)`;
                  } else {
-                     mediaInfo = 'Media Attached (Unknown)'; // Placeholder for video/audio
+                     mediaInfo = 'Media Attached (Unknown)';
                  }
             }
+
             let statusClass = '';
             switch (alert.status?.toLowerCase()) {
                 case 'viewed': statusClass = 'alert-status-viewed'; break;
                 case 'actioned': statusClass = 'alert-status-actioned'; break;
-                default: statusClass = 'alert-status-new'; break; // 'New' or undefined
+                default: statusClass = 'alert-status-new'; break;
             }
 
             row.innerHTML = `
@@ -3521,16 +3566,16 @@
                 <td>${senderInfo}</td>
                 <td class="alert-reason">${escapeHtml(alert.reason)}</td>
                 <td class="alert-location">${escapeHtml(locationText)}</td>
-                <td class="alert-media">${mediaInfo}${mediaPreview}</td>
+                <td class="alert-media">${mediaInfo}${mediaPreviewHtml}</td>
                 <td class="${statusClass}">${escapeHtml(alert.status || 'New')}</td>
                 <!-- Add Action buttons here if needed: View, Action, Delete -->
             `;
         });
     }
 
-    // Display Alerts (Police) - Very similar to Admin for now
+    // Modified displayPoliceAlerts to show image previews
     function displayPoliceAlerts(policeUserId) {
-        if (!loggedInPoliceInfo || loggedInPoliceInfo.policeId !== policeUserId) return; // Ensure correct police user
+        if (!loggedInPoliceInfo || loggedInPoliceInfo.policeId !== policeUserId) return;
         const alerts = getFromLocalStorage(ALERTS_KEY);
         policeAlertsTableBody.innerHTML = '';
         policeAlertsStatusDiv.textContent = '';
@@ -3541,28 +3586,35 @@
             return;
         }
 
-        alerts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Newest first
+        alerts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         alerts.forEach(alert => {
              const row = policeAlertsTableBody.insertRow();
              const senderInfo = `${escapeHtml(alert.senderName)} (${escapeHtml(alert.senderType)})`;
              const locationText = alert.location ? `${alert.location.lat}, ${alert.location.lon}` : 'N/A';
              const time = new Date(alert.timestamp);
              const formattedTime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+
+             // Media display logic
              let mediaInfo = 'None';
-             let mediaPreview = '';
+             let mediaPreviewHtml = ''; // Changed to Html
              if (alert.media && alert.media.length > 0) {
-                  if (alert.media[0].type === 'image_data_url' && alert.media[0].data.startsWith('data:image')) {
-                      mediaInfo = 'Image';
-                      mediaPreview = `<img src="${alert.media[0].data}" alt="Alert Media">`;
+                  const firstMedia = alert.media[0];
+                  if (firstMedia.type === 'image_data_url' && firstMedia.data.startsWith('data:image')) {
+                      mediaInfo = 'Image Attached';
+                       // Added style for thumbnail size
+                      mediaPreviewHtml = `<img src="${firstMedia.data}" alt="Alert Media" title="Attached Image" style="max-width: 80px; max-height: 60px; display: block; margin-top: 5px; cursor: pointer;">`;
+                  } else if (firstMedia.type === 'video_placeholder' || firstMedia.type === 'audio_placeholder' || firstMedia.type === 'image_placeholder') {
+                      mediaInfo = `${firstMedia.type.split('_')[0].charAt(0).toUpperCase() + firstMedia.type.split('_')[0].slice(1)} (Placeholder)`;
                   } else {
-                      mediaInfo = 'Media Attached';
+                      mediaInfo = 'Media Attached (Unknown)';
                   }
              }
+
              let statusClass = '';
              switch (alert.status?.toLowerCase()) {
-                case 'viewed': statusClass = 'alert-status-viewed'; break;
-                case 'actioned': statusClass = 'alert-status-actioned'; break;
-                default: statusClass = 'alert-status-new'; break;
+                 case 'viewed': statusClass = 'alert-status-viewed'; break;
+                 case 'actioned': statusClass = 'alert-status-actioned'; break;
+                 default: statusClass = 'alert-status-new'; break;
              }
 
              row.innerHTML = `
@@ -3570,7 +3622,7 @@
                  <td>${senderInfo}</td>
                  <td class="alert-reason">${escapeHtml(alert.reason)}</td>
                  <td class="alert-location">${escapeHtml(locationText)}</td>
-                 <td class="alert-media">${mediaInfo}${mediaPreview}</td>
+                 <td class="alert-media">${mediaInfo}${mediaPreviewHtml}</td>
                  <td class="${statusClass}">${escapeHtml(alert.status || 'New')}</td>
                  <!-- Add Police Action buttons: Mark Viewed, Mark Actioned -->
              `;
@@ -3584,15 +3636,15 @@
  * ==========================================================================
  * This application uses localStorage for data storage and performs
  * authentication (including admin/police checks), password changes/resets, and
- * sensitive actions (like alerts) entirely on the client-side.
+ * sensitive actions (like alerts with media) entirely on the client-side.
  * THIS IS EXTREMELY INSECURE AND UNSUITABLE FOR PRODUCTION ENVIRONMENTS.
  * - Data in localStorage is easily accessible and modifiable by the user.
  * - Passwords stored in plain text are a major security risk.
  * - Admin/Police credentials/checks hardcoded or managed client-side are trivial to bypass.
- * - Alert data (including location, reasons) is not protected.
+ * - Alert data (including location, reasons, media Data URLs) is not protected.
  * This implementation is for DEMONSTRATION PURPOSES ONLY. A real-world
  * application requires a secure backend server, database, proper session
- * management, server-side validation, encryption, and access controls.
+ * management, server-side validation, secure media storage, encryption, and access controls.
  * ========================================================================== */
 </script>
 
